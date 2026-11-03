@@ -3,6 +3,9 @@ package lk.ac.mrt.fit.library_api.controller;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lk.ac.mrt.fit.library_api.model.Book;
 import lk.ac.mrt.fit.library_api.service.BookService;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "Books", description = "Create, read, update and delete books")
 @RequestMapping("/api/books")
 public class BookController {
 
@@ -38,6 +42,10 @@ public class BookController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Create a book",
+            description = "Adds a book and returns it with its new id.")
+    @ApiResponse(responseCode = "201", description = "Book created")
+    @ApiResponse(responseCode = "400", description = "Invalid input")
     @PostMapping
     public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
         return ResponseEntity.status(HttpStatus.CREATED)
